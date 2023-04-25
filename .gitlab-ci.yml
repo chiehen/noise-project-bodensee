@@ -1,0 +1,19 @@
+image: python:3.10
+
+stages:
+  - test
+  - deploy
+
+before_script:
+  - pip install poetry
+  - poetry config virtualenvs.create false
+  - poetry install
+
+Unit Tests:
+  stage: test
+  artifacts:
+    when: always
+    reports:
+      junit: report.xml
+  script:
+    - poetry run pytest -v --junitxml=report.xml
