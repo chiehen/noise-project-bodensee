@@ -16,9 +16,9 @@ Unit Tests:
     when: always
     reports:
       junit: report.xml
-    coverage_report:
-      coverage_format: cobertura
-      path: coverage/cobertura-coverage.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
   script:
     - poetry run coverage run -m pytest  -v --junitxml=report.xml
     - poetry run coverage xml -o coverage/cobertura-coverage.xml
