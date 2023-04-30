@@ -17,3 +17,14 @@ Unit Tests:
       junit: report.xml
   script:
     - poetry run pytest -v --junitxml=report.xml
+
+
+pages:
+  stage: deploy
+  script:
+    - pdoc --output-dir public ./noiseTool
+  artifacts:
+    paths:
+    - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
