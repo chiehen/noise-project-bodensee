@@ -18,6 +18,24 @@ Unit Tests:
   script:
     - poetry run pytest -v --junitxml=report.xml
 
+Package Registry:
+  stage: deploy
+  needs: [Unit Tests]
+  script:
+    - poetry version patch
+    - git config user.email "bodensee@mytum.de"
+    - git config user.name "GitLab Pipeline"
+    - git remote add gitlab_origin https://oauth2:$ACCESS_TOKEN@gitlab.lrz.de/robust-devops/students/noise-project-bodensee.git
+    - git add .
+    - git commit -m "AUTO version increase"
+    - git push gitlab_origin HEAD:main -o ci.skip
+
+    - poetry build
+    - poetry config repositories.gitlab https://gitlab.lrz.de/api/v4/projects/$CI_PROJECT_ID/packages/pypi
+    - poetry config http-basic.gitlab gitlab-ci-token "$CI_JOB_TOKEN"
+    - poetry publish --repository gitlab
+  only:
+    - main
 
 pages:
   stage: deploy
