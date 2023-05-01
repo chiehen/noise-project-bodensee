@@ -21,6 +21,8 @@ typer = "^0.7.0"
 pytest = "^7.3.1"
 coverage = "^7.2.3"
 pdoc = "^13.1.1"
+flake8 = "^6.0.0"
+flake8-formatter-junit-xml = "^0.0.6"
 
 
 [build-system]
