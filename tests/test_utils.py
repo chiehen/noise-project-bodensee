@@ -7,3 +7,4 @@ def test_is_number_cool_positive():
 
 def test_is_number_cool_negative():
     assert not utils.is_number_cool(30)
+    assert not utils.is_number_cool(31)

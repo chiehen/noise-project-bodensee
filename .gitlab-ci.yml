@@ -1,12 +1,27 @@
 image: python:3.10
 
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  key: 
+    prefix: ${CI_JOB_NAME}
+    files:
+      - poetry.lock
+      - .gitlab-ci.yml
+  paths: 
+    - .venv
+    - .cache/pip
+    - venv/
+  when: on_success
+
 stages:
   - test
   - deploy
 
 before_script:
   - pip install poetry
-  - poetry config virtualenvs.create false
+  - poetry config virtualenvs.in-project true
   - poetry install
 
 Unit Tests:
@@ -21,3 +36,33 @@ Unit Tests:
   script:
     - poetry run coverage run -m pytest  -v --junitxml=report.xml
     - poetry run coverage xml -o coverage/cobertura-coverage.xml
+
+
+Package Registry:
+  stage: deploy
+  needs: [Unit Tests]
+  script:
+    - poetry version patch
+    - git config user.email "bodensee@mytum.de"
+    - git config user.name "GitLab Pipeline"
+    - git remote add gitlab_origin https://oauth2:$ACCESS_TOKEN@gitlab.lrz.de/robust-devops/students/noise-project-bodensee.git
+    - git add .
+    - git commit -m "AUTO version increase"
+    - git push gitlab_origin HEAD:main -o ci.skip
+
+    - poetry build
+    - poetry config repositories.gitlab https://gitlab.lrz.de/api/v4/projects/$CI_PROJECT_ID/packages/pypi
+    - poetry config http-basic.gitlab gitlab-ci-token "$CI_JOB_TOKEN"
+    - poetry publish --repository gitlab
+  only:
+    - main
+
+pages:
+  stage: deploy
+  script:
+    - pdoc --output-dir public ./noiseTool
+  artifacts:
+    paths:
+    - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
