@@ -4,18 +4,19 @@ variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
 
 cache:
-  key: 
+  key:
     prefix: ${CI_JOB_NAME}
     files:
       - poetry.lock
       - .gitlab-ci.yml
-  paths: 
+  paths:
     - .venv
     - .cache/pip
     - venv/
   when: on_success
 
 stages:
+  - linter
   - test
   - deploy
 
@@ -23,6 +24,20 @@ before_script:
   - pip install poetry
   - poetry config virtualenvs.in-project true
   - poetry install
+
+variables:
+  PYTHON_FILES: noiseTool/main.py noiseTool/utils.py
+
+Linter:
+  stage: linter
+  script:
+    - poetry run flake8 --version
+    - echo $PYTHON_FILES
+    - poetry run flake8 --ignore=E501 --format junit-xml $PYTHON_FILES > linter.xml
+  artifacts:
+    when: always
+    reports:
+      junit: linter.xml
 
 Unit Tests:
   stage: test
@@ -36,7 +51,6 @@ Unit Tests:
   script:
     - poetry run coverage run -m pytest  -v --junitxml=report.xml
     - poetry run coverage xml -o coverage/cobertura-coverage.xml
-
 
 Package Registry:
   stage: deploy
