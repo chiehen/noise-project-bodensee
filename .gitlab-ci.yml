@@ -60,7 +60,7 @@ Package Registry:
 pages:
   stage: deploy
   script:
-    - pdoc --output-dir public ./noiseTool
+    - poetry run pdoc --output-dir public ./noiseTool
   artifacts:
     paths:
     - public
