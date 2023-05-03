@@ -2,6 +2,7 @@ image: python:3.10
 
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  PYTHON_FILES: noiseTool/*
 
 cache:
   key:
@@ -24,9 +25,6 @@ before_script:
   - pip install poetry
   - poetry config virtualenvs.in-project true
   - poetry install
-
-variables:
-  PYTHON_FILES: noiseTool/main.py noiseTool/utils.py
 
 Linter:
   stage: linter
