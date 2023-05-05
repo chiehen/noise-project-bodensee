@@ -57,7 +57,8 @@ Package Registry:
     - poetry version patch
     - git config user.email "bodensee@mytum.de"
     - git config user.name "GitLab Pipeline"
-    - git remote add gitlab_origin https://oauth2:$ACCESS_TOKEN@gitlab.lrz.de/robust-devops/students/noise-project-bodensee.git
+    - git config remote.gitlab_origin.url >&- || git remote add gitlab_origin https://oauth2:$ACCESS_TOKEN@gitlab.lrz.de/robust-devops/students/noise-project-bodensee.git
+    - git remote set-url gitlab_origin https://oauth2:$ACCESS_TOKEN@gitlab.lrz.de/robust-devops/students/noise-project-bodensee.git
     - git add .
     - git commit -m "AUTO version increase"
     - git push gitlab_origin HEAD:main -o ci.skip
