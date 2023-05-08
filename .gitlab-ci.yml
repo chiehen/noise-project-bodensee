@@ -20,6 +20,7 @@ stages:
   - linter
   - test
   - deploy
+  - evaluate
 
 before_script:
   - pip install poetry
@@ -79,3 +80,55 @@ pages:
     - public
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+Base Image:
+  image: docker:latest
+  stage: evaluate
+  services:
+    - name: docker:dind # required for docker-in-docker
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "$CI_DEFAULT_BRANCH" ]]; then
+       tag=""
+        echo "Running on default branch '$CI_DEFAULT_BRANCH': tag = 'latest'"
+      else
+       tag=":$CI_COMMIT_REF_SLUG"
+       echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
+       echo "Pushing to $CI_REGISTRY_IMAGE/base_image${tag}"
+      fi
+    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/base_image${tag}" evaluation_data/base_image
+    - docker push "$CI_REGISTRY_IMAGE/base_image${tag}"
+    - echo "tag=$tag" > build.env
+  artifacts:
+    when: on_success
+    expire_in: 1 day
+    reports:
+      dotenv: build.env
+
+Shiki:
+  image: docker:latest
+  stage: evaluate
+  needs: 
+    - job: Base Image
+      artifacts: true
+  services:
+    - name: docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/shiki" evaluation_data/shiki --build-arg tag="$tag"
+
+Github Docs:
+  image: docker:latest
+  stage: evaluate
+  needs: 
+    - job: Base Image
+      artifacts: true
+  services:
+    - name: docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/evaluate_docs" evaluation_data/docs --build-arg tag="$tag"
