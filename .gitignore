@@ -195,7 +195,7 @@ instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+evaluation_data/docs/_build/
 
 # PyBuilder
 .pybuilder/
