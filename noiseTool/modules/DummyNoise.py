@@ -1,5 +1,6 @@
 from modules.Module import Module
 
+
 class DummyNoise(Module):
     def __init(self, **kwargs):
         print("dummy noise init.")
