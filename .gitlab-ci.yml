@@ -40,6 +40,11 @@ Linter:
 
 Unit Tests:
   stage: test
+  script:
+    - poetry run coverage run -m pytest -v --junitxml=report.xml
+    - poetry run coverage report -m
+    - poetry run coverage xml -o coverage/cobertura-coverage.xml
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
   artifacts:
     when: always
     reports:
@@ -47,9 +52,6 @@ Unit Tests:
       coverage_report:
         coverage_format: cobertura
         path: coverage/cobertura-coverage.xml
-  script:
-    - poetry run coverage run -m pytest  -v --junitxml=report.xml
-    - poetry run coverage xml -o coverage/cobertura-coverage.xml
 
 Package Registry:
   stage: deploy
