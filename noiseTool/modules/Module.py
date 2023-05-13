@@ -1,3 +1,4 @@
+import os
 from abc import abstractmethod
 import tempfile
 import json
@@ -22,18 +23,22 @@ class Module:
 
     def save(self, settings, key):
         try:
-            # create a temporary file
-            tmp = tempfile.NamedTemporaryFile(delete=False)
-            tmp.name = "noiseToolModules.json"
-            current_str = tmp.read()
+            tmp_dir = tempfile.gettempdir()
+            tmp_filename = f"{tmp_dir}/noiseToolModules.json"
+            content = "{}"
+
+            if os.path.exists(tmp_filename):
+                with open(tmp_filename, "r") as f:
+                    content = f.read()
 
             # load the current settings
-            current = json.loads(current_str)
+            current = json.loads(content)
             current[self.get_name()][key] = settings
 
-            # write the new settings
-            tmp.write(json.dumps(current))
-            tmp.close()
+            # save the settings
+            with open(tmp_filename, "w") as f:
+                f.write(json.dumps(current))
+
         except Exception as e:
             print(f"Could not save settings for module {key}.")
             raise e
