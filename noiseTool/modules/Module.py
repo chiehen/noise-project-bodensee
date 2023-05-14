@@ -34,7 +34,6 @@ class Module:
             # load the current settings
             current = json.loads(content)
             current.update({self.get_name(): {key: settings}})
-            #current[self.get_name()][key] = settings
 
             # save the settings
             with open(tmp_filename, "w") as f:
