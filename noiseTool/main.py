@@ -32,7 +32,7 @@ def addDummyNoise():
     """Dummy function for registering noise.
     Please delete it after real noise is implemented.
     """
-    DummyNoise().save("dummynoise", {"size": 2})
+    DummyNoise().save("test", {"test": "test"})
 
 
 @app.command()

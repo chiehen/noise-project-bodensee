@@ -13,4 +13,4 @@ class DummyNoise(Module):
         print("dummy noise stops.")
 
     def get_name(self):
-        return "test"
+        return "dummynoise"
