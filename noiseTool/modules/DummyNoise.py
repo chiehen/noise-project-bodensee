@@ -2,14 +2,15 @@ from modules.Module import Module
 
 
 class DummyNoise(Module):
-    def __init(self, **kwargs):
+    """Dummy Class just to test CLI interface. Please remove after inplement real noise."""
+    def __init__(self, **kwargs):
         print("dummy noise init.")
 
     def start(self):
         print("dummy noise starts.")
 
     def stop(self):
-        print("dummy noise starts.")
+        print("dummy noise stops.")
 
     def get_name(self):
-        pass
+        return "test"

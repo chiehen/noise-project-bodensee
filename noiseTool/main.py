@@ -1,11 +1,17 @@
+import json
+import os
+import tempfile
 import time
-import noiseTool.utils as utils
-from noiseTool.modules.DummyNoise import DummyNoise
 
 from typer import Typer
 
+import noiseTool.utils as utils
+from noiseTool.modules.DummyNoise import DummyNoise
+
 app = Typer()
-noises = []
+noise_map = {
+    "dummynoise": DummyNoise
+}
 
 
 @app.command()
@@ -26,23 +32,52 @@ def addDummyNoise():
     """Dummy function for registering noise.
     Please delete it after real noise is implemented.
     """
-    noises.append(DummyNoise())
+    DummyNoise().save("dummynoise", {"size": 2})
 
 
 @app.command()
 def activate():
     """Activate all registered noises"""
-    # load configuration from ???
+    tmp_dir = tempfile.gettempdir()
+    tmp_filename = f"{tmp_dir}/noiseToolModules.json"
+    content = "{}"
+    if os.path.exists(tmp_filename):
+        with open(tmp_filename, "r") as f:
+            content = f.read()
 
-    for noise in noises:
+    # load the current settings
+    current = json.loads(content)
+
+    for noise_name, noise_settings in current.items():
+        noise = __create_class_instance(noise_name, noise_settings)
         noise.start()
 
 
 @app.command()
 def deactivate():
     """Deactivate all registered noises"""
-    for noise in noises:
+    tmp_dir = tempfile.gettempdir()
+    tmp_filename = f"{tmp_dir}/noiseToolModules.json"
+    content = "{}"
+    if os.path.exists(tmp_filename):
+        with open(tmp_filename, "r") as f:
+            content = f.read()
+
+    # load the current settings
+    current = json.loads(content)
+
+    for noise_name, noise_settings in current.items():
+        noise = __create_class_instance(noise_name, noise_settings)
         noise.stop()
+
+
+def __create_class_instance(class_name, noise_settings):
+    if class_name in noise_map:
+        class_obj = noise_map[class_name]
+        instance = class_obj(**noise_settings)
+        return instance
+    else:
+        raise ValueError(f"Invalid class name: {class_name}")
 
 
 if __name__ == "__main__":
