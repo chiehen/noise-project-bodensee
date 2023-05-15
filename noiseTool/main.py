@@ -10,7 +10,7 @@ from noiseTool.modules.DummyNoise import DummyNoise
 
 app = Typer()
 noise_map = {
-    "dummynoise": DummyNoise
+    DummyNoise.__name__: DummyNoise
 }
 
 
@@ -38,17 +38,9 @@ def addDummyNoise():
 @app.command()
 def activate():
     """Activate all registered noises"""
-    tmp_dir = tempfile.gettempdir()
-    tmp_filename = f"{tmp_dir}/noiseToolModules.json"
-    content = "{}"
-    if os.path.exists(tmp_filename):
-        with open(tmp_filename, "r") as f:
-            content = f.read()
+    settings = __read_noise_setting()
 
-    # load the current settings
-    current = json.loads(content)
-
-    for noise_name, noise_settings in current.items():
+    for noise_name, noise_settings in settings.items():
         noise = __create_class_instance(noise_name, noise_settings)
         noise.start()
 
@@ -56,19 +48,23 @@ def activate():
 @app.command()
 def deactivate():
     """Deactivate all registered noises"""
+    settings = __read_noise_setting()
+
+    for noise_name, noise_settings in settings.items():
+        noise = __create_class_instance(noise_name, noise_settings)
+        noise.stop()
+
+
+def __read_noise_setting():
+    content = "{}"
+
     tmp_dir = tempfile.gettempdir()
     tmp_filename = f"{tmp_dir}/noiseToolModules.json"
-    content = "{}"
     if os.path.exists(tmp_filename):
         with open(tmp_filename, "r") as f:
             content = f.read()
 
-    # load the current settings
-    current = json.loads(content)
-
-    for noise_name, noise_settings in current.items():
-        noise = __create_class_instance(noise_name, noise_settings)
-        noise.stop()
+    return json.loads(content)
 
 
 def __create_class_instance(class_name, noise_settings):

@@ -6,7 +6,7 @@ import json
 
 class Module:
     @abstractmethod
-    def __init(self, **kwargs):
+    def __init__(self, **kwargs):
         pass
 
     @abstractmethod
