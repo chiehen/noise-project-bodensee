@@ -6,7 +6,7 @@ import json
 
 class Module:
     @abstractmethod
-    def __init(self, **kwargs):
+    def __init__(self, **kwargs):
         pass
 
     @abstractmethod
@@ -21,7 +21,7 @@ class Module:
     def get_name(self):
         pass
 
-    def save(self, settings, key):
+    def save(self, key: str, settings: dict):
         try:
             tmp_dir = tempfile.gettempdir()
             tmp_filename = f"{tmp_dir}/noiseToolModules.json"
@@ -33,7 +33,7 @@ class Module:
 
             # load the current settings
             current = json.loads(content)
-            current[self.get_name()][key] = settings
+            current.update({self.get_name(): {key: settings}})
 
             # save the settings
             with open(tmp_filename, "w") as f:

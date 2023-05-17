@@ -1,6 +1,7 @@
 import json
 import os.path
 import tempfile
+from unittest import TestCase
 
 from noiseTool.modules.Module import Module
 
@@ -10,7 +11,7 @@ def test_save_exists():
     assert callable(func)
 
 
-class ModuleTests:
+class ModuleTests(TestCase):
     def getTempFilePath(self):
         return f"{tempfile.gettempdir()}/noiseToolModules.json"
 
