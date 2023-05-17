@@ -1,4 +1,4 @@
-from modules.Module import Module
+from noiseTool.modules.Module import Module
 
 
 class DummyNoise(Module):
