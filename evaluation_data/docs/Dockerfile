@@ -38,7 +38,6 @@ COPY --chmod=0755 test.sh /test.sh
 
 # Run the test script
 ENV EXECUTIONS=25
-# RUN noise-tool activate
 RUN ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
-# RUN noise-tool deactivate
+
 RUN aggregate-test-results parse-junit-xml /test-results
