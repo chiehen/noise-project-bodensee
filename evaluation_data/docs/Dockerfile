@@ -43,4 +43,4 @@ ENV EXECUTIONS=25
 # RUN noise-tool deactivate
 # RUN aggregate-test-results parse-junit-xml /test-results
 
-CMD ["tc", "qdisc", "add", "dev" "eth0" "root" "netem" "delay" "200ms"]
+CMD ["tc", "qdisc", "add", "dev", "eth0", "root", "netem", "delay", "200ms"]
