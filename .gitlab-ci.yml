@@ -135,4 +135,3 @@ Github Docs:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     - sudo docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/evaluate_docs" evaluation_data/docs --build-arg tag="$tag"
-  privileged: true
