@@ -39,7 +39,8 @@ COPY --chmod=0755 test.sh /test.sh
 # Run the test script
 ENV EXECUTIONS=25
 # RUN noise-tool activate
-RUN tc qdisc add dev eth0 root netem delay 200ms
-RUN ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
+# RUN ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 # RUN noise-tool deactivate
-RUN aggregate-test-results parse-junit-xml /test-results
+# RUN aggregate-test-results parse-junit-xml /test-results
+
+CMD ["tc", "qdisc", "add", "dev" "eth0" "root" "netem" "delay" "200ms"]
