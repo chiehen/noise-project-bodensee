@@ -1,7 +1,6 @@
 FROM ubuntu:22.04
 RUN apt-get update && apt-get install -y \
-    git curl build-essential python3.10 python3-pip
-RUN apt-get install iproute2
+    git curl build-essential python3.10 python3-pip iproute2
 RUN pip install aggregate-test-results --index-url https://gitlab.lrz.de/api/v4/projects/140733/packages/pypi/simple
 
 # Set configuration for noise; we will replace the hardcoded values later (feel free to do this now if it helps you)
