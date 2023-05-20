@@ -36,6 +36,13 @@ def addDummyNoise():
 
 
 @app.command()
+def network_control(delay: int):
+    """temporary test tc command
+    """
+    print("set network control" + str(delay))
+
+
+@app.command()
 def activate():
     """Activate all registered noises"""
     settings = __read_noise_setting()

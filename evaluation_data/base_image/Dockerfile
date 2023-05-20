@@ -4,5 +4,6 @@ RUN apt-get update && apt-get install -y \
 RUN pip install aggregate-test-results --index-url https://gitlab.lrz.de/api/v4/projects/140733/packages/pypi/simple
 
 # Set configuration for noise; we will replace the hardcoded values later (feel free to do this now if it helps you)
+RUN noise-tool network-control 23
 # RUN noise-tool fuzz-load --load 30 \
 #     noise-tool interrupt-network -i -t 20
