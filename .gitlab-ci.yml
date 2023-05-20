@@ -20,6 +20,7 @@ stages:
   - linter
   - test
   - deploy
+  - build
   - evaluate
 
 before_script:
@@ -84,6 +85,16 @@ pages:
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 
+Build wheel:
+  stage: build
+  script:
+    - poetry install
+    - poetry build -f wheel
+    - mv dist/* dist/noise_tool-0.0.0-py3-none-any.whl
+  artifacts:
+    paths:
+      - dist/
+
 Base Image:
   image: docker:latest
   stage: evaluate
@@ -101,9 +112,12 @@ Base Image:
        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
        echo "Pushing to $CI_REGISTRY_IMAGE/base_image${tag}"
       fi
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/base_image${tag}" evaluation_data/base_image
+
+    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/base_image${tag}" -f evaluation_data/base_image/Dockerfile .
     - docker push "$CI_REGISTRY_IMAGE/base_image${tag}"
     - echo "tag=$tag" > build.env
+  dependencies:
+    - Build wheel
   artifacts:
     when: on_success
     expire_in: 1 day
