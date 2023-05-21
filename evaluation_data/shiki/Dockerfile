@@ -39,6 +39,6 @@ COPY --chmod=0755 test.sh /test.sh
 # Run the test script
 WORKDIR /shiki/.packages/site
 ENV EXECUTIONS=25
-RUN ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
+CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 
-RUN aggregate-test-results parse-junit-xml /test-results
+# RUN aggregate-test-results parse-junit-xml /test-results
