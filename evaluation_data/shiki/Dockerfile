@@ -41,4 +41,3 @@ WORKDIR /shiki/.packages/site
 ENV EXECUTIONS=25
 CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 
-# RUN aggregate-test-results parse-junit-xml /test-results
