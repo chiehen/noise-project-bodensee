@@ -17,3 +17,6 @@ done
 
 # Deactivate noise
 noise-tool deactivate
+
+# Get test outputs
+aggregate-test-results parse-junit-xml /test-results
