@@ -2,12 +2,14 @@ import json
 import os
 import tempfile
 import time
+from dataclasses import asdict
 
+import typer
 from typer import Typer
 
 import noiseTool.utils as utils
 from noiseTool.modules.DummyNoise import DummyNoise
-from noiseTool.modules.NetworkControl import NetworkControl
+from noiseTool.modules.NetworkControl import NetworkControl, NetworkSetting
 
 app = Typer()
 noise_map = {
@@ -38,11 +40,18 @@ def addDummyNoise():
 
 
 @app.command()
-def network_control():
+def network_control(
+    delay: int = typer.Option(0, help="adds the chosen delay [ms] to the packets outgoing"),
+    jitter: int = typer.Option(0, help="delay variation [ms]"),
+    loss: int = typer.Option(0, help="packet loss rate [%]"),
+    bandwidth: int = typer.Option(None, help="network bandwidth rate [Kbps]")
+):
     """temporary test tc command
     """
-    print("set network configuration")
-    NetworkControl().save("setting", {"delay": 200})
+    setting = NetworkSetting(delay=delay, jitter=jitter, loss=loss, bandwidth=bandwidth)
+
+    print("set network configuration", asdict(setting))
+    NetworkControl().save("setting", asdict(setting))
 
 
 @app.command()

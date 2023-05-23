@@ -14,4 +14,4 @@ RUN apt-get install -y stress-ng
 
 # Set configuration for noise
 RUN noise-tool adddummynoise
-RUN noise-tool network-control
+RUN noise-tool network-control --delay 200
