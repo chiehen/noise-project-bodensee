@@ -3,6 +3,8 @@
 # Get the number of test executions from the first command line argument
 EXECUTIONS=$1
 
+# Activate noise
+noise-tool activate
 
 sed -i "36i reporter: 'junit'," /docs/playwright.config.ts
 
@@ -16,3 +18,9 @@ for i in $(seq 1 $EXECUTIONS); do
    mv "/current-test-results/results.xml" "/test-results/results_$i.xml"
    echo "[finished] Test suite run $i"
 done
+
+# Deactivate noise
+noise-tool deactivate
+
+# Get test outputs
+aggregate-test-results parse-junit-xml /test-results
