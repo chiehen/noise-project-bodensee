@@ -7,10 +7,12 @@ from typer import Typer
 
 import noiseTool.utils as utils
 from noiseTool.modules.DummyNoise import DummyNoise
+from noiseTool.modules.NetworkControl import NetworkControl
 
 app = Typer()
 noise_map = {
-    DummyNoise.__name__: DummyNoise
+    DummyNoise.__name__: DummyNoise,
+    NetworkControl.__name__: NetworkControl
 }
 
 
@@ -36,10 +38,11 @@ def addDummyNoise():
 
 
 @app.command()
-def network_control(delay: int):
+def network_control():
     """temporary test tc command
     """
-    print("set network control" + str(delay))
+    print("set network configuration")
+    NetworkControl().save("setting", {"delay": 200})
 
 
 @app.command()

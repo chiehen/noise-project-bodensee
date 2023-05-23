@@ -7,7 +7,7 @@ from noiseTool.modules.Module import Module
 
 @dataclass
 class NetworkSetting:
-    delay: int = 0 
+    delay: int = 0
     jitter: int = 0
     loss: int = 0
     bandwidth: Optional[int] = None
@@ -16,7 +16,8 @@ class NetworkSetting:
 class NetworkControl(Module):
     """Configure the Linux kernel packet scheduler"""
     def __init__(self, **kwargs):
-        self.setting = NetworkSetting(**kwargs)
+        if kwargs:
+            self.setting = NetworkSetting(**kwargs["setting"])
 
     def start(self):
         cmd = ["tcset", "eth0"]
