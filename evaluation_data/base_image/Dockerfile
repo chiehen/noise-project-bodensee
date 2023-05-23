@@ -3,6 +3,7 @@ RUN apt-get update && apt-get install -y \
     git curl build-essential python3.10 python3-pip iproute2
 RUN pip install aggregate-test-results --index-url https://gitlab.lrz.de/api/v4/projects/140733/packages/pypi/simple
 
+RUN pip install tcconfig
 # Set configuration for noise; we will replace the hardcoded values later (feel free to do this now if it helps you)
 RUN noise-tool network-control 23
 # RUN noise-tool fuzz-load --load 30 \
