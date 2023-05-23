@@ -18,9 +18,9 @@ class NetworkSetting:
         elif self.jitter < 0 or self.jitter > 100000 or (self.delay == 0 and self.jitter > 0):
             raise ValueError('Jitter must be between 0 and 100000, and delay > 0')
         elif self.loss < 0 or self.loss > 100:
-            raise ValueError('Delay must be between 0 and 100')
+            raise ValueError('Packet loss must be between 0 and 100')
         elif self.bandwidth is not None and self.bandwidth <= 0:
-            raise ValueError('bandwidth must be greater than 0')
+            raise ValueError('Bandwidth must be greater than 0')
         elif (self.delay + self.jitter + self.loss) == 0 and (self.bandwidth is None):
             raise ValueError('No network noise is imposed')
 
