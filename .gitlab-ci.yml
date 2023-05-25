@@ -113,7 +113,7 @@ Base Image:
        echo "Pushing to $CI_REGISTRY_IMAGE/base_image${tag}"
       fi
 
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/base_image${tag}" -f evaluation_data/base_image/Dockerfile .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/base_image${tag}" -f evaluation_data/base_image/Dockerfile .
     - docker push "$CI_REGISTRY_IMAGE/base_image${tag}"
     - echo "tag=$tag" > build.env
   dependencies:
