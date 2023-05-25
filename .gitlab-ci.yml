@@ -133,7 +133,6 @@ Test Projects:
   parallel:
     matrix:
       - PROJECT: [shiki, docs]
-  environment: project/$PROJECT
   services:
     - name: docker:dind
   before_script:
