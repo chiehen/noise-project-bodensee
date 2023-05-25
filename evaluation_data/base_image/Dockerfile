@@ -13,3 +13,4 @@ RUN apt-get install -y stress-ng
 
 # Set configuration for noise
 RUN noise-tool adddummynoise
+RUN noise-tool stress-ng add "^^cpu 0 ^l 5 ^^copy-file 5 ^^copy-file-bytes 2G""

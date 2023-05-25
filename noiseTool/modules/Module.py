@@ -17,8 +17,9 @@ class Module:
     def stop(self):
         pass
 
+    @staticmethod
     @abstractmethod
-    def get_name(self):
+    def get_name():
         pass
 
     def save(self, key: str, settings: dict):
