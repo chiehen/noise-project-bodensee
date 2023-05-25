@@ -34,7 +34,7 @@ class StressNGModule(Module):
 
     def add(self):
         """Adds the module to the list of modules"""
-        self.save("stress_ng", {"params": self.params})
+        self.save("params", self.params)
 
 
 @app.command(help="Adds the stress-ng module to the list of modules. You can pass the parameters directly to stress-ng",
