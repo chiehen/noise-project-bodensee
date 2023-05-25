@@ -1,5 +1,4 @@
 import subprocess
-from typing import Annotated
 
 from typer import Typer, Argument
 
