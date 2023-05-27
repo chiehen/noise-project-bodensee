@@ -124,15 +124,12 @@ Base Image:
     reports:
       dotenv: build.env
 
-Test Projects:
+.Test Projects:
   image: docker:latest
   stage: evaluate
   needs: 
     - job: Base Image
       artifacts: true
-  parallel:
-    matrix:
-      - PROJECT: [shiki, docs]
   services:
     - name: docker:dind
   before_script:
@@ -140,3 +137,17 @@ Test Projects:
   script:
     - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/$PROJECT" evaluation_data/$PROJECT --build-arg tag="$tag"
     - docker run --cap-add=NET_ADMIN "$CI_REGISTRY_IMAGE/$PROJECT"
+
+Test Projects:
+  extends: .Test Projects
+  parallel:
+    matrix:
+      - PROJECT: [shiki, docs]
+
+Test Projects big:
+  extends: .Test Projects
+  when: manual
+  parallel:
+    matrix:
+      - PROJECT: [shiki, docs]
+  
