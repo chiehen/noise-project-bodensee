@@ -113,7 +113,7 @@ Base Image:
        echo "Pushing to $CI_REGISTRY_IMAGE/base_image${tag}"
       fi
 
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/base_image${tag}" -f evaluation_data/base_image/Dockerfile .
+    - docker build --pull -t "$CI_REGISTRY_IMAGE/base_image${tag}" -f evaluation_data/base_image/Dockerfile .
     - docker push "$CI_REGISTRY_IMAGE/base_image${tag}"
     - echo "tag=$tag" > build.env
   dependencies:
@@ -124,7 +124,7 @@ Base Image:
     reports:
       dotenv: build.env
 
-Shiki:
+.Test Projects:
   image: docker:latest
   stage: evaluate
   needs: 
@@ -135,19 +135,19 @@ Shiki:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/shiki" evaluation_data/shiki --build-arg tag="$tag"
-    - docker run --cap-add=NET_ADMIN "$CI_REGISTRY_IMAGE/shiki"
+    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/$PROJECT" evaluation_data/$PROJECT --build-arg tag="$tag"
+    - docker run --cap-add=NET_ADMIN "$CI_REGISTRY_IMAGE/$PROJECT"
 
-Github Docs:
-  image: docker:latest
-  stage: evaluate
-  needs: 
-    - job: Base Image
-      artifacts: true
-  services:
-    - name: docker:dind
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-  script:
-    - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/evaluate_docs" evaluation_data/docs --build-arg tag="$tag"
-    - docker run --cap-add=NET_ADMIN "$CI_REGISTRY_IMAGE/evaluate_docs"
+Test Projects:
+  extends: .Test Projects
+  parallel:
+    matrix:
+      - PROJECT: [shiki, docs]
+
+Test Projects big:
+  extends: .Test Projects
+  when: manual
+  parallel:
+    matrix:
+      - PROJECT: [shiki, docs]
+  
