@@ -34,6 +34,7 @@ class StressNGModule(Module):
 
     def add(self):
         """Adds the module to the list of modules"""
+        print(f"Stress-ng is added with parameters {self.params}")
         self.save("params", self.params)
 
 
