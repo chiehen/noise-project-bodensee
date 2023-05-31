@@ -46,7 +46,7 @@ def network_control(
     loss: int = typer.Option(0, help="packet loss rate [%]"),
     bandwidth: int = typer.Option(None, help="network bandwidth rate [Kbps]")
 ):
-    """temporary test tc command
+    """Register network control noise and parameter.
     """
     setting = NetworkSetting(delay=delay, jitter=jitter, loss=loss, bandwidth=bandwidth)
 
