@@ -38,7 +38,7 @@ class NetworkControl(Module):
         cmd += ["--delay", f"{self.setting.delay}",
                 "--delay-distro", f"{self.setting.jitter}", "--loss", f"{self.setting.loss}%", "--overwrite"]
 
-        print(cmd)
+        print(f"NetworkControl: Running command{cmd}")
         subprocess.run(cmd)
 
     def stop(self):
