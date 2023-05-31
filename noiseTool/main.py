@@ -14,7 +14,7 @@ from noiseTool.modules.NetworkControl import NetworkControl, NetworkSetting
 app = Typer()
 noise_map = {
     DummyNoise.__name__: DummyNoise,
-    NetworkControl.__name__: NetworkControl
+    NetworkControl.get_name(): NetworkControl
 }
 
 

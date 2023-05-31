@@ -45,5 +45,6 @@ class NetworkControl(Module):
         cmd = ["tcdel", "eth0", "--all"]
         subprocess.run(cmd)
 
-    def get_name(self):
-        return self.__class__.__name__
+    @staticmethod
+    def get_name():
+        return NetworkSetting.__name__
