@@ -1,4 +1,5 @@
 FROM ubuntu:22.04
+ARG noise='noise-tool adddummynoise'
 RUN apt-get update && apt-get install -y \
     git curl build-essential python3.10 python3-pip
 RUN pip install aggregate-test-results --index-url https://gitlab.lrz.de/api/v4/projects/140733/packages/pypi/simple
@@ -15,5 +16,4 @@ RUN apt-get install -y stress-ng
 RUN apt-get install -y iproute2
 
 # Set configuration for noise
-RUN noise-tool adddummynoise
-RUN noise-tool network-control --delay 200
+RUN eval ${noise}
