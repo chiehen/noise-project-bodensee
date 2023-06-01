@@ -158,5 +158,5 @@ Test Projects big:
   when: manual
   parallel:
     matrix:
-      - PROJECT: [shiki, docs]
+      - PROJECT: [shiki, docs, material-ui]
         BASE_IMAGE_NAME_PREFIX: [disk, cpu, memory]
