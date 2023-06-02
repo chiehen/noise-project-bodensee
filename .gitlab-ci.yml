@@ -112,7 +112,7 @@ Base Image:
        echo "Running on branch '$CI_COMMIT_BRANCH': tag = $tag"
        echo "Pushing to $CI_REGISTRY_IMAGE/base_image${tag}"
       fi
-
+    - docker pull "$CI_REGISTRY_IMAGE/base_image${tag}-$BASE_IMAGE_NAME_PREFIX" || true
     - docker build --build-arg noise="$NOISE_TYPE" --pull -t "$CI_REGISTRY_IMAGE/base_image${tag}-$BASE_IMAGE_NAME_PREFIX" -f evaluation_data/base_image/Dockerfile .
     - docker push "$CI_REGISTRY_IMAGE/base_image${tag}-$BASE_IMAGE_NAME_PREFIX"
     - echo "tag=$tag" > build.env
@@ -144,14 +144,21 @@ Base Image:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
     - docker build --pull --no-cache -t "$CI_REGISTRY_IMAGE/$PROJECT" evaluation_data/$PROJECT --build-arg tag="$tag-$BASE_IMAGE_NAME_PREFIX"
-    - docker run --cap-add=NET_ADMIN "$CI_REGISTRY_IMAGE/$PROJECT"
+    - id=$(docker create --cap-add=NET_ADMIN "$CI_REGISTRY_IMAGE/$PROJECT")
+    - docker start -a $id
+    - echo $id
+    - echo $CI_PROJECT_DIR
+    - docker cp $id:/experiment-artifacts/experiment.zip $CI_PROJECT_DIR/experiment.zip
+  artifacts:
+    paths:
+      - experiment.zip
 
 Test Projects:
   extends: .Test Projects
   parallel:
     matrix:
       - PROJECT: [shiki, docs]
-        BASE_IMAGE_NAME_PREFIX: [disk, cpu, memory]
+        BASE_IMAGE_NAME_PREFIX: [disk]
 
 Test Projects big:
   extends: .Test Projects
