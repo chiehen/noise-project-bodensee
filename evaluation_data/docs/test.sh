@@ -24,3 +24,5 @@ noise-tool deactivate
 
 # Get test outputs
 aggregate-test-results parse-junit-xml /test-results
+# Create artifacts
+aggregate-test-results create-artifacts /test-results /experiment-artifacts --aggregation-format junit-xml
