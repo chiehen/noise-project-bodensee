@@ -6,12 +6,6 @@ ENV NODE_VERSION=18.16.0
 ENV NVM_DIR=/root/.nvm
 ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
 
-# Install required packages and dependencies
-# RUN apt-get update && \
-#     apt-get install -y \
-#     openssl \
-#     libssl-dev \
-#     lsof
 
 # Install Node.js and NPM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash && \
@@ -19,7 +13,7 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | b
     nvm install ${NODE_VERSION} && \
     nvm use v${NODE_VERSION} && \
     nvm alias default v${NODE_VERSION} && \
-    npm install -g npm
+    npm i -g npm@latest
 
 # Clone the playwright repository and checkout a specific commit
 WORKDIR /playwright
@@ -30,9 +24,9 @@ RUN git init && \
 
 # Install dependencies and build the project
 WORKDIR /playwright
-RUN npm ci --include=optional && \
-    npx playwright install --with-deps chromium && \
-    npm run build
+RUN npm ci && \
+    npm run build && \
+    npx playwright install --with-deps chromium
 
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh

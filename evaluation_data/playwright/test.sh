@@ -8,7 +8,7 @@ noise-tool activate
 
 sed -i "47i ['junit']," /playwright/tests/library/playwright.config.ts
 
-export ELASTICSEARCH_URL=http://localhost:9200/
+export CI=1
 mkdir /current-test-results
 
 mkdir -p /test-results
