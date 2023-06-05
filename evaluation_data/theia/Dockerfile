@@ -1,0 +1,51 @@
+ARG tag=latest
+FROM gitlab.lrz.de:5005/robust-devops/students/noise-project-bodensee/base_image${tag}
+
+ENV NODE_VERSION=16.14.0
+ENV NVM_DIR=/root/.nvm
+ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
+
+# Install required packages and dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    pkg-config \
+    libx11-dev \
+    libxkbfile-dev \
+    libsecret-1-dev
+
+
+# Install Node.js and NPM
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash && \
+    . "$NVM_DIR/nvm.sh" && \
+    nvm install ${NODE_VERSION} && \
+    nvm use v${NODE_VERSION} && \
+    nvm alias default v${NODE_VERSION} && \
+    npm install -g npm \
+    npm install --global yarn
+RUN node --version
+RUN npm --version
+RUN yarn --version
+
+# Clone the docs repository and checkout a specific commit
+WORKDIR /theia
+RUN git init && \
+    git remote add origin https://github.com/eclipse-theia/theia.git && \
+    git fetch --depth 1 origin b59581b411f33c639bfd68f23ec357280b9fdadf && \
+    git checkout FETCH_HEAD
+
+RUN yarn && \
+    yarn download:plugins && \
+    yarn browser build
+
+# Install dependencies and build the project
+WORKDIR /theia/examples/playwright
+RUN yarn build
+RUN npx playwright install --with-deps chromium
+
+# Copy the test script to the container
+COPY --chmod=0755 test.sh /test.sh
+
+# Run the test script
+ENV EXECUTIONS=25
+CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
+
