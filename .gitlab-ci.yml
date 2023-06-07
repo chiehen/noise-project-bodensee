@@ -126,6 +126,12 @@ Base Image:
         BASE_IMAGE_NAME_PREFIX: cpu
       - NOISE_TYPE: noise-tool stress-ng add "^vm 2 ^^vm-bytes 40"
         BASE_IMAGE_NAME_PREFIX: memory
+      - NOISE_TYPE: noise-tool network-control --delay 200 --jitter 10
+        BASE_IMAGE_NAME_PREFIX: network_delay
+      - NOISE_TYPE: noise-tool network-control --loss 50
+        BASE_IMAGE_NAME_PREFIX: packet_loss
+      - NOISE_TYPE: noise-tool network-control --bandwidth 1000
+        BASE_IMAGE_NAME_PREFIX: bandwidth
   artifacts:
     when: on_success
     expire_in: 1 day
@@ -166,4 +172,4 @@ Test Projects big:
   parallel:
     matrix:
       - PROJECT: [shiki, docs, material-ui]
-        BASE_IMAGE_NAME_PREFIX: [disk, cpu, memory]
+        BASE_IMAGE_NAME_PREFIX: [disk, cpu, memory, network_delay, packet_loss, bandwidth]
