@@ -31,6 +31,8 @@ RUN git init && \
 WORKDIR /remix
 RUN yarn && yarn build
 
+RUN npx playwright install
+
 
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh

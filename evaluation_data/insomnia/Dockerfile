@@ -31,6 +31,7 @@ RUN git init && \
 WORKDIR /insomnia
 RUN npm run bootstrap && npm run app-build
 
+RUN npx playwright install
 
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh
