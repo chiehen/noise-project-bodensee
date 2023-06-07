@@ -6,15 +6,15 @@ EXECUTIONS=$1
 # Activate noise
 noise-tool activate
 
-sed -i "47i ['junit']," /playwright/tests/library/playwright.config.ts
 
 export CI=1
+export PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml
 mkdir /current-test-results
 
 mkdir -p /test-results
 for i in $(seq 1 $EXECUTIONS); do
    echo "[start] Test suite run $i"
-   PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml npm run ctest --reporter=junit
+   PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml npm run ctest -- --reporter=junit
    mv "/current-test-results/results.xml" "/test-results/results_$i.xml"
    echo "[finished] Test suite run $i"
 done
