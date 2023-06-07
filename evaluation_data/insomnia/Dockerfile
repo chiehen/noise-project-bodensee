@@ -30,7 +30,7 @@ RUN git init && \
 # Install dependencies and build the project
 WORKDIR /insomnia
 RUN npm run bootstrap && npm run app-build
-
+RUN npx playwright install-deps
 RUN npx playwright install
 
 # Copy the test script to the container

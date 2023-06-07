@@ -30,7 +30,7 @@ RUN git init && \
 # Install dependencies and build the project
 WORKDIR /remix
 RUN yarn && yarn build
-
+RUN npx playwright install-deps
 RUN npx playwright install
 
 
