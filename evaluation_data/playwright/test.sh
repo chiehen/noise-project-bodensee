@@ -4,9 +4,9 @@
 EXECUTIONS=$1
 
 # edit playwright config
+sed -i '38c const headed = false;' /playwright/tests/library/playwright.config.ts
 sed -i '70c retries: 0,' /playwright/tests/library/playwright.config.ts
 sed -i "71c reporter: 'junit'," /playwright/tests/library/playwright.config.ts
-
 export CI=1
 export PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml
 
