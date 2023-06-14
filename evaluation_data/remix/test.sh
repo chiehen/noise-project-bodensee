@@ -14,7 +14,7 @@ mkdir /current-test-results
 mkdir -p /test-results
 for i in $(seq 1 $EXECUTIONS); do
    echo "[start] Test suite run $i"
-   PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml yarn test:integration --reporter=junit
+   PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml yarn test:integration --project=chromium --reporter=junit
    mv "/current-test-results/results.xml" "/test-results/results_$i.xml"
    echo "[finished] Test suite run $i"
 done
