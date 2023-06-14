@@ -3,8 +3,10 @@
 # Get the number of test executions from the first command line argument
 EXECUTIONS=$1
 
-# edit playwright config
+# Edit playwright config
 sed -i '38c const headed = false;' /playwright/tests/library/playwright.config.ts
+sed -i '101c headless: true,' /playwright/tests/library/playwright.config.ts
+sed -i '114c headful: false,' /playwright/tests/library/playwright.config.ts
 sed -i '70c retries: 0,' /playwright/tests/library/playwright.config.ts
 sed -i "71c reporter: 'junit'," /playwright/tests/library/playwright.config.ts
 export CI=1
