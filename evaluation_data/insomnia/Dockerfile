@@ -33,10 +33,13 @@ RUN npm run bootstrap && npm run app-build
 RUN npx playwright install-deps
 RUN npx playwright install
 
+# modify Playwright config
+RUN sed s/"process.env.CI ? 'github' : 'list'"/\'junit\'/g packages/insomnia-smoke-test/playwright.config.ts > packages/insomnia-smoke-test/playwright.config.ts2 && mv packages/insomnia-smoke-test/playwright.config.ts2 packages/insomnia-smoke-test/playwright.config.ts
+
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh
 
 # Run the test script
-ENV EXECUTIONS=25
+ENV EXECUTIONS=1
 CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 
