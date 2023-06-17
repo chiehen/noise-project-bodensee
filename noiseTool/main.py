@@ -1,10 +1,13 @@
 import json
 import os
 import tempfile
+from dataclasses import asdict
 
+import typer
 from typer import Typer
 
 from noiseTool.modules.DummyNoise import DummyNoise
+from noiseTool.modules.NetworkControl import NetworkControl, NetworkSetting
 from noiseTool.modules.StessNGModule import StressNGModule, app as stress_ng_app
 
 app = Typer()
@@ -12,7 +15,8 @@ app.add_typer(stress_ng_app, name="stress-ng", help="Module using Stress NG to s
 
 noise_map = {
     DummyNoise.__name__: DummyNoise,
-    StressNGModule.get_name(): StressNGModule,
+    NetworkControl.get_name(): NetworkControl,
+    StressNGModule.get_name(): StressNGModule
 }
 
 
@@ -22,6 +26,21 @@ def addDummyNoise():
     Please delete it after real noise is implemented.
     """
     DummyNoise().save("test", {"test": "test"})
+
+
+@app.command()
+def network_control(
+    delay: int = typer.Option(0, help="adds the chosen delay [ms] to the packets outgoing"),
+    jitter: int = typer.Option(0, help="delay variation [ms]"),
+    loss: int = typer.Option(0, help="packet loss rate [%]"),
+    bandwidth: int = typer.Option(None, help="network bandwidth rate [Kbps]")
+):
+    """Register network control noise and parameter.
+    """
+    setting = NetworkSetting(delay=delay, jitter=jitter, loss=loss, bandwidth=bandwidth)
+
+    print("set network configuration", asdict(setting))
+    NetworkControl().save("setting", asdict(setting))
 
 
 @app.command()
