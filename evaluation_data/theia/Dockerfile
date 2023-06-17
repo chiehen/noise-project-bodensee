@@ -1,6 +1,7 @@
 ARG tag=latest
 FROM gitlab.lrz.de:5005/robust-devops/students/noise-project-bodensee/base_image${tag}
 
+# Node.js >= 16.14.0 and < 17
 ENV NODE_VERSION=16.14.0
 ENV NVM_DIR=/root/.nvm
 ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
@@ -26,26 +27,26 @@ RUN node --version
 RUN npm --version
 RUN yarn --version
 
-# Clone the docs repository and checkout a specific commit
+# Clone the theia repository and checkout a specific commit
 WORKDIR /theia
 RUN git init && \
     git remote add origin https://github.com/eclipse-theia/theia.git && \
     git fetch --depth 1 origin b59581b411f33c639bfd68f23ec357280b9fdadf && \
     git checkout FETCH_HEAD
 
+# Build Browser
 RUN yarn && \
     yarn download:plugins && \
     yarn browser build
 
-# Install dependencies and build the project
-WORKDIR /theia/examples/playwright
-RUN yarn build
+# Build Playwright
+RUN yarn --cwd examples/playwright build
 RUN npx playwright install --with-deps chromium
 
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh
 
 # Run the test script
-ENV EXECUTIONS=2
+ENV EXECUTIONS=1
 CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 
