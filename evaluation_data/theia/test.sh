@@ -14,21 +14,24 @@ sed -i '25d' /theia/examples/playwright/playwright.config.ts
 export PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml
 export CI=1
 
+# start browser on http://localhost:3000
+yarn --cwd examples/playwright theia:start &
+
 # Activate noise
 noise-tool activate
 
 mkdir -p /test-results
 for i in $(seq 1 $EXECUTIONS); do
     echo "[start] Test suite run $i"
-    yarn --cwd examples/playwright theia:start &
     yarn --cwd examples/playwright ui-tests
     mv "/current-test-results/results.xml" "/test-results/results_$i.xml"
-    kill -9 $(lsof -t -i:3000)  # kill the server
     echo "[finished] Test suite run $i"
 done
 
 # Deactivate noise
 noise-tool deactivate
+
+kill -9 $(lsof -t -i:3000)  # kill the server
 
 # Get test outputs
 aggregate-test-results parse-junit-xml /test-results
