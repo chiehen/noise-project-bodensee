@@ -47,6 +47,6 @@ RUN npx playwright install --with-deps chromium
 COPY --chmod=0755 test.sh /test.sh
 
 # Run the test script
-ENV EXECUTIONS=2
+ENV EXECUTIONS=25
 CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 
