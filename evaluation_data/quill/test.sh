@@ -11,9 +11,10 @@ mkdir /current-test-results
 mkdir -p /test-results
 for i in $(seq 1 $EXECUTIONS); do
     echo "[start] Test suite run $i"
-    PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml npm run test:e2e-website -- --reporter=junit
+    npm start & sleep 120
+    PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml npm run test:e2e -- --reporter=junit
+    kill -9 $(lsof -t -i:9000)  # kill the server
     mv "/current-test-results/results.xml" "/test-results/results_$i.xml"
-    kill -9 $(lsof -t -i:3000)  # kill the server
     echo "[finished] Test suite run $i"
 done
 
