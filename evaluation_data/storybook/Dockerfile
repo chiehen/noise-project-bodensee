@@ -26,7 +26,7 @@ RUN npm --version
 WORKDIR /storybook
 RUN git init && \
     git remote add origin https://github.com/storybookjs/storybook.git && \
-    git fetch --depth 1 origin ed105890826fd37ea20c4613d3bee700bcb31079 && \
+    git fetch --depth 1 origin 1107520c5b516f2f78824f7af43604ae9a94c083 && \
     git checkout FETCH_HEAD
 
 
