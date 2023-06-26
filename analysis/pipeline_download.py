@@ -48,6 +48,3 @@ def download_pipeline_artifacts(pa_token: str, project_id: int, pipeline_id: int
             shutil.rmtree(os.path.join(directory, str(job.id)))
 
     return directory
-
-
-print(download_pipeline_artifacts("glpat-coLADpxvmLN1ypSvzkay", 140225, 1430287, "./artifacts"))
