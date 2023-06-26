@@ -5,12 +5,6 @@ ENV NODE_VERSION=16.17.1
 ENV NVM_DIR=/root/.nvm
 ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
 
-# Install required packages and dependencies
-# RUN apt-get update && \
-#     apt-get install -y \
-#     openssl \
-#     libssl-dev \
-#     lsof
 
 # Install Node.js and NPM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash && \
