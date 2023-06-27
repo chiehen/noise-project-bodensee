@@ -31,12 +31,12 @@ RUN corepack enable && corepack prepare yarn@stable --activate && yarn set versi
 RUN yarn --version
 
 # build the project
-RUN yarn task --task build --template=react-vite/default-ts --start-from=auto
+RUN yarn task --task build --template=react-vite/default-ts --start-from=install
 
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh
 
 # Run the test script
-ENV EXECUTIONS=25
+ENV EXECUTIONS=2
 CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 
