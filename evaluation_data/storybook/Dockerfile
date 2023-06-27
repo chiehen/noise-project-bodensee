@@ -30,8 +30,10 @@ RUN npx playwright install-deps
 RUN corepack enable && corepack prepare yarn@stable --activate && yarn set version 3.5.1 && yarn install
 RUN yarn --version
 
+RUN rm -rf node_modules package-lock.json
+
 # build the project
-RUN yarn task --task build --template=react-vite/default-ts --start-from=install
+RUN DEBUG=1 yarn task --task build --template=react-vite/default-ts --start-from=install
 
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh
