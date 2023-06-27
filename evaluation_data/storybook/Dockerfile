@@ -26,11 +26,11 @@ RUN git init && \
 
 RUN npx playwright install-deps
 
+RUN rm -rf node_modules package-lock.json
+
 # install yarn with specific version
 RUN corepack enable && corepack prepare yarn@stable --activate && yarn set version 3.5.1 && yarn install
 RUN yarn --version
-
-RUN rm -rf node_modules package-lock.json
 
 # build the project
 RUN DEBUG=1 yarn task --task build --template=react-vite/default-ts --start-from=install
