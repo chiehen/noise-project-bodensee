@@ -16,6 +16,8 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | b
 RUN node --version
 RUN npm --version
 
+RUN npm install -g yarn
+
 # Clone the storybook repository and checkout a specific commit
 WORKDIR /storybook
 RUN git init && \
