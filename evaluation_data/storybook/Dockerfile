@@ -22,20 +22,14 @@ RUN npm install -g yarn
 WORKDIR /storybook
 RUN git init && \
     git remote add origin https://github.com/storybookjs/storybook.git && \
-    git fetch --depth 1 origin 1107520c5b516f2f78824f7af43604ae9a94c083 && \
+    git fetch --depth 1 origin 4f7342b509d4a396e42afc9a215047bed0a42c7b && \
     git checkout FETCH_HEAD
 
 
 RUN npx playwright install-deps
 
-# RUN rm -rf node_modules package-lock.json
-
-# install yarn with specific version
-# RUN corepack enable && corepack prepare yarn@stable --activate && yarn set version 3.5.1 && yarn install
-# RUN yarn --version
-
 # build the project
-RUN yarn task --task build --template=react-vite/default-ts --start-from=install
+RUN yarn task --task build --template=react-vite/default-ts --start-from=auto
 
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh

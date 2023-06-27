@@ -3,7 +3,7 @@
 # Get the number of test executions from the first command line argument
 EXECUTIONS=$1
 
-# edit storybook config (https://github.com/storybookjs/storybook/blob/1107520c5b516f2f78824f7af43604ae9a94c083/code/playwright.config.ts)
+# edit storybook config (https://github.com/storybookjs/storybook/blob/4f7342b509d4a396e42afc9a215047bed0a42c7b/code/playwright.config.ts)
 # disable retry
 sed -i '29d' /storybook/code/playwright.config.ts
 
