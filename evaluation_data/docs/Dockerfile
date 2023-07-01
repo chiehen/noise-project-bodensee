@@ -37,6 +37,6 @@ RUN npm ci --include=optional && \
 COPY --chmod=0755 test.sh /test.sh
 
 # Run the test script
-ENV EXECUTIONS=25
+ENV EXECUTIONS=100
 CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 
