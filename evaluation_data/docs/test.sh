@@ -13,7 +13,7 @@ mkdir /current-test-results
 
 mkdir -p /test-results
 
-max_time=1800 # 0.5hr
+max_time=600 # 10 mins
 elapsed_time=0
 for i in $(seq 1 $EXECUTIONS); do
    test_start=$(date +%s)
