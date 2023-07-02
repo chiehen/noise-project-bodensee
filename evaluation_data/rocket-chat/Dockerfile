@@ -42,7 +42,7 @@ RUN yarn build
 COPY --chmod=0755 test.sh /test.sh
 
 # Run the test script
-ENV EXECUTIONS=25
+ENV EXECUTIONS=100
 WORKDIR /rocket-chat
 CMD ["/bin/bash", "-c", "/test.sh $EXECUTIONS"]
 
