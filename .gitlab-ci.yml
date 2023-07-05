@@ -129,7 +129,7 @@ Base Image:
         BASE_IMAGE_NAME_PREFIX: cpu50
       - NOISE_TYPE: noise-tool stress-ng add "^vm 2 ^^vm-bytes 40"
         BASE_IMAGE_NAME_PREFIX: memory
-      - NOISE_TYPE: noise-tool stress-ng ^^timer 8 ^^timer-freq 10000
+      - NOISE_TYPE: noise-tool stress-ng add ^^timer 8 ^^timer-freq 10000
         BASE_IMAGE_NAME_PREFIX: interrupt
       - NOISE_TYPE: noise-tool network-control --delay 200 --jitter 10
         BASE_IMAGE_NAME_PREFIX: network_delay
