@@ -17,6 +17,7 @@ noise-tool = "noiseTool.main:app"
 python = "^3.10"
 typer = "^0.7.0"
 tcconfig = "^0.28.0"
+python-gitlab = "^3.15.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
