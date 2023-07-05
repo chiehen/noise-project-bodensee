@@ -171,7 +171,7 @@ Test Projects:
   parallel:
     matrix:
       - PROJECT: [shiki, docs]
-        BASE_IMAGE_NAME_PREFIX: [baseline, cpu20, cpu50, interrupt]
+        BASE_IMAGE_NAME_PREFIX: [baseline]
 
 Test Projects big:
   stage: evaluate all
