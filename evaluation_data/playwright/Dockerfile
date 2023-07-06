@@ -6,6 +6,9 @@ ENV NODE_VERSION=18.16.0
 ENV NVM_DIR=/root/.nvm
 ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
 
+# Install required packages and dependencies
+RUN apt-get update && \
+    apt-get install -y xvfb
 
 # Install Node.js and NPM
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash && \
