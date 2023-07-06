@@ -23,7 +23,7 @@ elapsed_time=0
 for i in $(seq 1 $EXECUTIONS); do
    test_start=$(date +%s)
    echo "[start] Test suite run $i"
-   PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml npm run ctest -- --reporter=junit
+   xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npm run test -- --project=chromium
    mv "/current-test-results/results.xml" "/test-results/results_$i.xml"
    echo "[finished] Test suite run $i"
 
