@@ -17,10 +17,11 @@ def download_pipeline_artifacts(pa_token: str, project_id: int, pipeline_id: int
     print(pipeline)
     jobs = pipeline.jobs.list(get_all=True)
 
-    print(f"Using temp dir: {directory} for #{pipeline_id} with {len(jobs)} jobs")
+    print(f"Using dir: {directory} for #{pipeline_id} with {len(jobs)} jobs")
     for job in jobs:
         if len([j for j in job.artifacts if j["file_type"] in accepted_artifact_types]) == 0: continue
         # create a new directory for each job
+        print(f"Downloading artifacts for job {job.name} with id {job.id}")
         try:
             os.mkdir(os.path.join(directory, str(job.id)))
         except FileExistsError:
