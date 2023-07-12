@@ -55,4 +55,4 @@ def download_pipeline_artifacts(pa_token: str, project_id: int, pipeline_id: int
 
     return directory
 
-download_pipeline_artifacts(os.environ["GITLAB_USER_KEY"], 140225, 1485147, "./artifacts")
+download_pipeline_artifacts(os.environ["GITLAB_USER_KEY"], 140225, 1490383, "./artifacts")
