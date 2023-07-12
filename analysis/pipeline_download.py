@@ -17,16 +17,16 @@ def download_pipeline_artifacts(pa_token: str, project_id: int, pipeline_id: int
     print(pipeline)
     jobs = pipeline.jobs.list(get_all=True)
 
-    print(f"Using temp dir: {directory} for #{pipeline_id} with {len(jobs)} jobs")
+    print(f"Using dir: {directory} for #{pipeline_id} with {len(jobs)} jobs")
     for job in jobs:
         if len([j for j in job.artifacts if j["file_type"] in accepted_artifact_types]) == 0: continue
         # create a new directory for each job
+        print(f"Downloading artifacts for job {job.name} with id {job.id}")
         try:
             os.mkdir(os.path.join(directory, str(job.id)))
         except FileExistsError:
-            print(f"Directory {os.path.join(directory, str(job.id))} already exists. Deleting contents.")
-            for f in os.listdir(os.path.join(directory, str(job.id))):
-                os.remove(os.path.join(directory, str(job.id), f))
+            print(f"Directory {os.path.join(directory, str(job.id))} already exists. Continuing")
+            continue
 
         # write jobname to file
         with open(os.path.join(directory, str(job.id), "jobname.txt"), "w") as f:
@@ -54,3 +54,5 @@ def download_pipeline_artifacts(pa_token: str, project_id: int, pipeline_id: int
             shutil.rmtree(os.path.join(directory, str(job.id)))
 
     return directory
+
+download_pipeline_artifacts(os.environ["GITLAB_USER_KEY"], 140225, 1490383, "./artifacts")
