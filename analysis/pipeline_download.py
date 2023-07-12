@@ -25,9 +25,8 @@ def download_pipeline_artifacts(pa_token: str, project_id: int, pipeline_id: int
         try:
             os.mkdir(os.path.join(directory, str(job.id)))
         except FileExistsError:
-            print(f"Directory {os.path.join(directory, str(job.id))} already exists. Deleting contents.")
-            for f in os.listdir(os.path.join(directory, str(job.id))):
-                os.remove(os.path.join(directory, str(job.id), f))
+            print(f"Directory {os.path.join(directory, str(job.id))} already exists. Continuing")
+            continue
 
         # write jobname to file
         with open(os.path.join(directory, str(job.id), "jobname.txt"), "w") as f:
@@ -55,3 +54,5 @@ def download_pipeline_artifacts(pa_token: str, project_id: int, pipeline_id: int
             shutil.rmtree(os.path.join(directory, str(job.id)))
 
     return directory
+
+download_pipeline_artifacts(os.environ["GITLAB_USER_KEY"], 140225, 1485147, "./artifacts")
