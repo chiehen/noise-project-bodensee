@@ -2,7 +2,7 @@ ARG tag=latest
 FROM gitlab.lrz.de:5005/robust-devops/students/noise-project-bodensee/base_image${tag}
 
 # Node.js >= 16.14.0 and < 17
-ENV NODE_VERSION=16.14.0
+ENV NODE_VERSION=16.20.0
 ENV NVM_DIR=/root/.nvm
 ENV PATH="${NVM_DIR}/versions/node/v${NODE_VERSION}/bin:${PATH}"
 
@@ -35,9 +35,11 @@ RUN git init && \
     git checkout FETCH_HEAD
 
 # Build Browser
-RUN yarn && \
-    yarn download:plugins && \
-    yarn browser build
+RUN yarn config set script-shell /bin/bash
+RUN NODE_ENV=development yarn install --production=false
+RUN yarn install --check-files
+RUN yarn download:plugins
+RUN yarn browser build
 
 # Build Playwright
 RUN yarn --cwd examples/playwright build
