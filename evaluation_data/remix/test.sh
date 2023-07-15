@@ -6,10 +6,7 @@ EXECUTIONS=$1
 # Activate noise
 noise-tool activate
 
-sed -i "36i reporter: 'junit'," /integration/playwright.config.ts
-
-sed -i "s/process.env.CI ? 3 : 0/0/" /integration/playwright.config.ts
-
+sed -i "s/process.env.CI ? 3 : 0/0/" /remix/integration/playwright.config.ts
 
 export ELASTICSEARCH_URL=http://localhost:9200/
 mkdir /current-test-results
