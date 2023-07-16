@@ -30,9 +30,9 @@ RUN git init && \
 # Install dependencies and build the project
 WORKDIR /dev-roadmap
 RUN pnpm install && \
-    pnpm run build && \
-    pnpm dlx playwright install-deps && \
-    pnpm dlx playwright install
+    pnpm run build
+
+RUN pnpm exec playwright install --with-deps
 
 
 RUN touch ./dist/.nojekyll && \
