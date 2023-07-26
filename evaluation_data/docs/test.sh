@@ -4,6 +4,8 @@
 EXECUTIONS=$1
 
 # Activate noise
+export BASE_SEND_REQUEST=localhost
+export PORT_SEND_REQUEST=4000
 noise-tool activate
 
 sed -i "36i reporter: 'junit'," /docs/playwright.config.ts
@@ -22,9 +24,9 @@ for i in $(seq 1 $EXECUTIONS); do
    PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml npm run playwright-test --reporter=junit
    mv "/current-test-results/results.xml" "/test-results/results_$i.xml"
    echo "[finished] Test suite run $i"
-   
+
    test_end=$(date +%s)
-   
+
    # check if execution time will exceeds
    test_time=$((test_end - test_start))
    echo "one iteration time: $test_time"

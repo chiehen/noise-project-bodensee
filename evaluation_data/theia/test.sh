@@ -18,6 +18,8 @@ export CI=1
 yarn --cwd examples/playwright theia:start &
 
 # Activate noise
+export BASE_SEND_REQUEST=localhost
+export PORT_SEND_REQUEST=3000
 noise-tool activate
 
 mkdir -p /test-results
@@ -25,7 +27,7 @@ max_time=36000 # 10 hrs
 elapsed_time=0
 for i in $(seq 1 $EXECUTIONS); do
     test_start=$(date +%s)
-    
+
     echo "[start] Test suite run $i"
     yarn --cwd examples/playwright ui-tests
     mv "/current-test-results/results.xml" "/test-results/results_$i.xml"

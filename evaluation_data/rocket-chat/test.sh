@@ -13,13 +13,15 @@ yarn obj:dev --allow-superuser &
 sleep 540
 
 # Activate noise
+export BASE_SEND_REQUEST=localhost
+export PORT_SEND_REQUEST=3000
 noise-tool activate
 
 max_time=36000 # 10 hrs
 elapsed_time=0
 for i in $(seq 1 $EXECUTIONS); do
     test_start=$(date +%s)
-    
+
     echo "[start] Test suite run $i"
     PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml npm run test:e2e -- --reporter=junit
     mv "/current-test-results/results.xml" "/test-results/results_$i.xml"

@@ -4,6 +4,8 @@
 EXECUTIONS=$1
 
 # Activate noise
+export BASE_SEND_REQUEST=127.0.0.1
+export PORT_SEND_REQUEST=3000
 noise-tool activate
 
 mkdir -p /test-results
@@ -18,7 +20,7 @@ for i in $(seq 1 $EXECUTIONS); do
     mv "/shiki/test-results/results.xml" "/test-results/results_$i.xml"
     kill -9 $(lsof -t -i:3000)  # kill the server
     echo "[finished] Test suite run $i"
-    
+
     test_end=$(date +%s)
 
     # check if execution time will exceeds

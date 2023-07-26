@@ -143,6 +143,11 @@ Base Image:
         BASE_IMAGE_NAME_POSTFIX: bandwidth
       - NOISE_TYPE: echo "BASELINE WITHOUT ANY NOISE"
         BASE_IMAGE_NAME_POSTFIX: baseline
+      - NOISE_TYPE: noise-tool send_request add "^^timeout 1"
+        BASE_IMAGE_NAME_POSTFIX: send_request_1
+      - NOISE_TYPE: noise-tool send_request add "^^timeout 0.1"
+        BASE_IMAGE_NAME_POSTFIX: send_request_0_1
+
   artifacts:
     when: on_success
     expire_in: 1 day
