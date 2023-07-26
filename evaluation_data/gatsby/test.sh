@@ -4,6 +4,8 @@
 EXECUTIONS=$1
 
 # Activate noise
+export BASE_SEND_REQUEST=localhost
+export PORT_SEND_REQUEST=8000
 noise-tool activate
 
 mkdir /current-test-results

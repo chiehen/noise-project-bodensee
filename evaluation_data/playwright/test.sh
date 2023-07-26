@@ -13,6 +13,8 @@ export CI=1
 export PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml
 
 # Activate noise
+export BASE_SEND_REQUEST=localhost
+export PORT_SEND_REQUEST=3333
 noise-tool activate
 
 mkdir /current-test-results

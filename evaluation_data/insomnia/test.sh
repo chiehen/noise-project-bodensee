@@ -4,6 +4,8 @@
 EXECUTIONS=$1
 
 # Activate noise
+export BASE_SEND_REQUEST=127.0.0.1
+export PORT_SEND_REQUEST=4010
 noise-tool activate
 
 sed -i "36i reporter: 'junit'," /docs/playwright.config.ts

@@ -4,7 +4,10 @@
 EXECUTIONS=$1
 
 # Activate noise
+export BASE_SEND_REQUEST=localhost
+export PORT_SEND_REQUEST=3000
 noise-tool activate
+
 echo fs.inotify.max_user_watches=524288 | tee -a /etc/sysctl.conf && sysctl -p
 export ELASTICSEARCH_URL=http://localhost:9200/
 mkdir /current-test-results
@@ -14,7 +17,7 @@ max_time=36000 # 10 hrs
 elapsed_time=0
 for i in $(seq 1 $EXECUTIONS); do
    test_start=$(date +%s)
-   
+
    echo "[start] Test suite run $i"
    PLAYWRIGHT_JUNIT_OUTPUT_NAME=/current-test-results/results.xml pnpm run test:e2e
    mv "/current-test-results/results.xml" "/test-results/results_$i.xml"

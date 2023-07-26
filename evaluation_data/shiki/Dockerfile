@@ -35,6 +35,7 @@ RUN pnpm install && \
 
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh
+COPY --chmod=0755 SendRequest.py /SendRequest.py
 
 # Run the test script
 WORKDIR /shiki/.packages/site

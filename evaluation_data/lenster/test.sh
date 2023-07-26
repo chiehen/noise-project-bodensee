@@ -4,6 +4,8 @@
 EXECUTIONS=$1
 
 # Activate noise
+export BASE_SEND_REQUEST=localhost
+export PORT_SEND_REQUEST=4783
 noise-tool activate
 
 export ELASTICSEARCH_URL=http://localhost:9200/

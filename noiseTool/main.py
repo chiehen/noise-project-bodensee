@@ -9,14 +9,18 @@ from typer import Typer
 from noiseTool.modules.DummyNoise import DummyNoise
 from noiseTool.modules.NetworkControl import NetworkControl, NetworkSetting
 from noiseTool.modules.StessNGModule import StressNGModule, app as stress_ng_app
+from noiseTool.modules.ConstantRequestModule import ConstantRequestModule, app as send_request
+
 
 app = Typer()
 app.add_typer(stress_ng_app, name="stress-ng", help="Module using Stress NG to stress the CPU, memory, etc.")
+app.add_typer(send_request, name="send_request", help="Module to stress the server with dummy HTTP requests.")
 
 noise_map = {
     DummyNoise.__name__: DummyNoise,
     NetworkControl.get_name(): NetworkControl,
-    StressNGModule.get_name(): StressNGModule
+    StressNGModule.get_name(): StressNGModule,
+    ConstantRequestModule.get_name(): ConstantRequestModule,
 }
 
 
@@ -41,6 +45,15 @@ def network_control(
 
     print("set network configuration", asdict(setting))
     NetworkControl().save("setting", asdict(setting))
+
+
+@app.command()
+def addConstantRequest():
+    """Register constant request module.
+    """
+    setting = {}
+    print("set network configuration", asdict(setting))
+    ConstantRequestModule().save("setting", asdict(setting))
 
 
 @app.command()

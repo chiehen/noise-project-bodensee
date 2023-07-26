@@ -55,6 +55,7 @@ RUN yarn gulp:build && clojure -M:cljs release app electron --config-merge "{:cl
 RUN (cd static && yarn install && yarn rebuild:all)
 # Copy the test script to the container
 COPY --chmod=0755 test.sh /test.sh
+COPY --chmod=0755 SendRequest.py /SendRequest.py
 
 # Run the test script
 ENV EXECUTIONS=100
